@@ -7,9 +7,9 @@ This installer script fetches the needed content from the ntop repo, and then in
 
 To run the installer:
 
-  wget https://github.com/branchnetconsulting/so1404-ntopng-installer/raw/master/install_ntopng_on_so
+	wget https://github.com/branchnetconsulting/so1404-ntopng-installer/raw/master/install_ntopng_on_so
   
-  sudo bash -c "source ./install_ntopng_on_so"
+	sudo bash -c "source ./install_ntopng_on_so"
 
 Requirement: Security Onion sensor running on Ubuntu 14.04 with a pfring version of 6.2.0 or higher.
 
