@@ -6,6 +6,7 @@ The ntopng packages maintained at http://packages.ntop.org/ depend on the pfring
 This installer script fetches the needed content from the ntop repo, and then installs ntopng in a way that works cleanly on Security Onion sensors.
 
 To run the installer:
+
   wget https://github.com/branchnetconsulting/so1404-ntopng-installer/raw/master/install_ntopng_on_so
   sudo bash -c "source ./install_ntopng_on_so"
 
