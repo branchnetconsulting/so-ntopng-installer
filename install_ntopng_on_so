@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# install-ntopng-on-so1404 
+# install_ntopng_on_so 
 # Script to install the latest ntopng on SO 14.04 sensor systems.  
 # by Kevin Branch (kevin@branchnetconsulting.com)
 #
