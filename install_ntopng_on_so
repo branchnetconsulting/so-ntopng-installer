@@ -99,7 +99,7 @@ echo '--data-dir=/usr/local/ntopng' >> /etc/ntopng/ntopng.conf.dist
 echo '--local-networks="192.168.0.0/16,10.0.0.0/8,172.16.0.0/12"' >> /etc/ntopng/ntopng.conf.dist
 echo "--interface=$IFACES" >> /etc/ntopng/ntopng.conf.dist
 echo '--dns-mode=1' >> /etc/ntopng/ntopng.conf.dist
-echo '--disable-login=1' >> /etc/ntopng/ntopng.conf.dist
+echo '--disable-login=0' >> /etc/ntopng/ntopng.conf.dist
 echo '--community' >> /etc/ntopng/ntopng.conf.dist
 echo '--daemon' >> /etc/ntopng/ntopng.conf.dist
 echo '-G=/var/tmp/ntopng.pid' >> /etc/ntopng/ntopng.conf.dist
