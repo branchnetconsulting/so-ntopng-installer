@@ -105,6 +105,7 @@ echo '--daemon' >> /etc/ntopng/ntopng.conf.dist
 echo '-G=/var/tmp/ntopng.pid' >> /etc/ntopng/ntopng.conf.dist
 if [ ! -f /etc/ntopng/ntopng.conf ]; then
 	echo "Generating /etc/ntopng/ntopng.conf for the first time.  Consult ntopng man page for customization options. "
+	echo "The default login credentials for ntopng are: admin/admin"
 cp /etc/ntopng/ntopng.conf.dist /etc/ntopng/ntopng.conf
 	else
 		echo "Did not overwrite pre-existing /etc/ntopng/ntopng.conf file."
