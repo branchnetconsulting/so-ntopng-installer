@@ -18,3 +18,5 @@ To install/upgrade ntopng:
 	chmod 700 install_ntopng_on_so
   
 	sudo ./install_ntopng_on_so
+
+Note that for new installs of ntopng, login authentication is enabled by default (starting username/password is admin/admin) and ntopng listens on tcp/3000 for https connections.  If you are running this installer on an SO system upgraded from 12.04 to 14.04 on which ntopng 1.2.X had been previously installed according to the Wiki article (https://github.com/Security-Onion-Solutions/security-onion/wiki/DeployingNtopng), then your original /etc/ntopng/ntopng.conf file will not be overwritten by this installer script.  Consider reviewing the settings in /etc/ntopng/ntopng.conf.dist and copying across any desired changes to /etc/ntopng/ntopng.conf.
