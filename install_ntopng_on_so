@@ -108,7 +108,7 @@ if [ ! -f /etc/ntopng/ntopng.conf ]; then
 	echo "The default login credentials for ntopng are: admin/admin"
 	cp /etc/ntopng/ntopng.conf.dist /etc/ntopng/ntopng.conf
 else
-	echo "Did not overwrite pre-existing /etc/ntopng/ntopng.conf file."
+	echo "Did not overwrite pre-existing /etc/ntopng/ntopng.conf file.  Consider consulting /etc/ntopng/ntopng.conf.dist and copying across changes as desired."
 fi
 
 # create /etc/ntopng/ntopng.start if missing
