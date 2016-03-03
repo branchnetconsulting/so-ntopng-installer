@@ -1,6 +1,8 @@
 # so1404-ntopng-installer
 Script to install or upgrade to the latest stable ntopng from the official ntop repo, onto a Security Onion 14.04 sensor
 
+##### March 3,2016:  The ntopng developers recently introduced a new dependency into ntopng. Any subsequent runs of my installer script resulted in ntopng failing to start due to an unmet library dependency. This has now been corrected.  Running the newest version of my script should correct the problem if your ntopng installation was broken due to this issue.
+
 The ntopng packages maintained at http://packages.ntop.org/ depend on the pfring package also maintained there.  However, Security Onion systems use a custom set of securityonion-pfring-* packages to satisfy pfring dependencies, and these cannot coexist with the pfring package from the ntop.org repo.  
 
 This installer script fetches the needed content from the ntop repo, and then installs ntopng in a way that works cleanly on Security Onion sensors.
