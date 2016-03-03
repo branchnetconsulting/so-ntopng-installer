@@ -67,12 +67,12 @@ fi
 # Manually extract library dependencies from the pfring deb file and put the needed files in place
 mkdir scratch
 dpkg-deb -x pfring_*deb scratch
-if [ "`ls -1 scratch/usr/local/lib/{libanic,libntapi,libntos}.so | wc -l`" != "3" ]; then
+if [ "`ls -1 scratch/usr/local/lib/{libanic,libntapi,libntos,libsnf}.so | wc -l`" != "4" ]; then
 	echo "Failed to extract necessary library files from the ntop pfring package.  Aborting..."
 	exit
 fi
-cp scratch/usr/local/lib/{libanic,libntapi,libntos}.so /usr/local/lib/
-	ldconfig
+cp scratch/usr/local/lib/{libanic,libntapi,libntos,libsnf}.so /usr/local/lib/
+ldconfig
 
 # Create a stub pfring package so that apt-get don't keep barking about a missing dependency we've already met.
 mkdir -p pfring-stub/DEBIAN
