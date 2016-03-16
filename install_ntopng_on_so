@@ -13,7 +13,7 @@ exit
 fi
 
 # Confirm this is an SO sensor
-IFACES=`echo \`grep -v "^#" /etc/nsm/sensortab 2> /dev/null | cut -f1 | sed 's/.*-\([^-]\+\)/\1/g'\` | sed 's/ /,/'`
+IFACES=`echo \`grep -v "^#" /etc/nsm/sensortab 2> /dev/null | cut -f1 | sed 's/.*-\([^-]\+\)/\1/g'\` | sed 's/ /,/g'`
 if [ "$IFACES" == ""  ]; then 
 echo "This system does not appear to be a Security Onion sensor."
 exit
