@@ -1,7 +1,7 @@
 # so1404-ntopng-installer
 Script to install or upgrade to the latest stable ntopng from the official ntop repo, onto a Security Onion 14.04 sensor
 
-##### June 13, 2016:  Sometime after ntopng version 2.2.160504, the latest stable ntopng packages from ntop.org started requiring a version of pfring which too new for Security Onion to be compatible with.  I am following up with the ntop team to see how to best resolve this issue for Security Onion users.
+##### June 13, 2016:  Sometime after ntopng version 2.2.160504, the latest stable ntopng packages from ntop.org started requiring a version of pfring which is too new for Security Onion to be compatible with.  I am following up with the ntop team to see how to best resolve this issue for Security Onion users.
 
 The ntopng packages maintained at http://packages.ntop.org/ depend on the pfring package also maintained there.  However, Security Onion systems use a custom set of securityonion-pfring-* packages to satisfy pfring dependencies, and these cannot coexist with the pfring package from the ntop.org repo.  
 
