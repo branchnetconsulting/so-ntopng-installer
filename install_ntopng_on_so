@@ -2,7 +2,7 @@
 
 #
 # install_ntopng_on_so 
-# Script to install the latest ntopng on SO 14.04 sensor systems.  
+# Script to install the latest stable and SO-compatible ntopng on SO 14.04 sensor systems.  
 # by Kevin Branch (kevin@branchnetconsulting.com)
 #
 
@@ -15,8 +15,8 @@ fi
 # Confirm this is an SO sensor
 IFACES=`echo \`grep -v "^#" /etc/nsm/sensortab 2> /dev/null | cut -f1 | sed 's/.*-\([^-]\+\)/\1/g'\` | sed 's/ /,/g'`
 if [ "$IFACES" == ""  ]; then 
-echo "This system does not appear to be a Security Onion sensor."
-exit
+	echo "This system does not appear to be a Security Onion sensor."
+	exit
 fi
 
 # Confirm the Sensor is running on Ubuntu 14.04
@@ -26,26 +26,12 @@ if [[ ! `grep "14\.04" /etc/lsb-release` ]]; then
 fi
 
 # Announce start of installation process
-	echo -e "\n*\n* Starting install/upgrade of ntopng…\n*\n"
+echo -e "\n*\n* Starting install/upgrade of ntopngâ€¦\n*\n"
 
-# Confirm reachability of official ntop repo and collect the package lists
+# Download back versions of ntop and pfring debs that are compatible with SO
 rm -rf /tmp/_ntop
 mkdir /tmp/_ntop
 cd /tmp/_ntop
-curl http://packages.ntop.org/apt-stable/14.04/x64/Packages.gz 2> /dev/null | gunzip 2> /dev/null > /tmp/_ntop/package_list_1
-curl http://packages.ntop.org/apt-stable/14.04/all/Packages.gz 2> /dev/null | gunzip 2> /dev/null > /tmp/_ntop/package_list_2
-if [[ ! `grep "Package: ntopng" /tmp/_ntop/package_list_1` || ! `grep "Package: ntopng-data" /tmp/_ntop/package_list_2` ]]; then
-	echo "The official ntop repository is unreachable or broken.  Installation cannot proceed."
-	exit
-fi
-
-# Determine the currently running SO PF_RING version, and the version included in the ntopng stable repo.  They must match.
-SO_PFRING_VERSION=`grep "PF_RING Version" /proc/net/pf_ring/info | sed 's/.*: \([^ ]\+\) .*/\1/'`
-NTOP_PFRING_VERSION=`grep "\/pfring_6\."  /tmp/_ntop/package_list_1 | tail -n1 | sed 's/.*pfring_\([^-]\+\)-.*/\1/'`
-if [ "$NTOP_PFRING_VERSION" != "$SO_PFRING_VERSION" ]; then
-	echo "The currently running securityonion-pfring version is $SO_PFRING_VERSION but the one in the stable ntop repo for ntopng is $NTOP_PFRING_VERSION.  These must be the same.  You might try running \"sudo soup\" to see if a newer securityonion-pfring version is available. "
-	exit
-fi
 
 # Install dependencies
 sudo apt-get install libzmq3  libnetfilter-queue1 libmnl0 libpgm-5.1-0 \
@@ -53,17 +39,11 @@ fonts-dejavu fonts-dejavu-extra libjemalloc1 librrd4 \
 redis-server redis-tools ttf-dejavu ttf-dejavu-core ttf-dejavu-extra
 
 # Fetch needed deb packages from ntop repo and confirm all were acquired
-NTOPNG_DEB="http://packages.ntop.org/apt-stable/14.04/x64/"`grep "Filename: .*\/ntopng_" /tmp/_ntop/package_list_1 | sed 's/.*\/\(ntopng_.*\)/\1/'`
-NTOPNGDATA_DEB="http://packages.ntop.org/apt-stable/14.04/all/"`grep "Filename: .*\/ntopng-data_" /tmp/_ntop/package_list_2 | sed 's/.*\/\(ntopng-data_.*\)/\1/'`
-PFRING_DEB="http://packages.ntop.org/apt-stable/14.04/x64/"`grep "Filename: .*\/pfring_" /tmp/_ntop/package_list_1 | sed 's/.*\/\(pfring_.*\)/\1/'`
-echo -e "\n*\n* Downloading packages needed for ntopng installation...\n*\n"
-wget $NTOPNG_DEB $NTOPNGDATA_DEB $PFRING_DEB
-md5sum *.deb | cut -d" " -f1 > md5sums
-if [ "`grep -f md5sums package_list_? | wc -l`" != "3" ]; then
-	echo "One or more ntopng related packages did not download correctly or otherwise failed verification."
-exit
-fi
-	
+echo -e "\n*\n* Downloading SO-compatible back versions of deb packages needed for ntopng installation...\n*\n"
+wget https://github.com/branchnetconsulting/so1404-ntopng-installer/blob/master/ntopng_2.2.160504-1216_amd64.deb?raw=true -O ntopng_2.2.160504-1216_amd64.deb
+wget https://github.com/branchnetconsulting/so1404-ntopng-installer/blob/master/ntopng-data_2.2.160504_all.deb?raw=true -O ntopng-data_2.2.160504_all.deb
+wget https://github.com/branchnetconsulting/so1404-ntopng-installer/blob/master/pfring_6.2.0-549_amd64.deb?raw=true -O pfring_6.2.0-549_amd64.deb
+
 # Manually extract library dependencies from the pfring deb file and put the needed files in place
 mkdir scratch
 dpkg-deb -x pfring_*deb scratch
@@ -76,7 +56,7 @@ ldconfig
 
 # Create a stub pfring package so that apt-get don't keep barking about a missing dependency we've already met.
 mkdir -p pfring-stub/DEBIAN
-PFVER=`echo $PFRING_DEB | sed 's/.*pfring_\([^_]\+\)_.*/\1/'`
+PFVER="6.2.0-549"
 echo "Package: pfring" > pfring-stub/DEBIAN/control
 echo "Version: $PFVER" >> pfring-stub/DEBIAN/control
 echo "Section: user/hidden" >> pfring-stub/DEBIAN/control
