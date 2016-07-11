@@ -25,6 +25,11 @@ if [[ ! `grep "14\.04" /etc/lsb-release` ]]; then
 	exit
 fi
 
+# Stop ntopng if it is already running
+if [[ `service ntopng status | grep "ntopng running"` ]];
+	then service ntopng stop
+fi
+
 # Announce start of installation process
 	echo -e "\n*\n* Starting install/upgrade of ntopng…\n*\n"
 
