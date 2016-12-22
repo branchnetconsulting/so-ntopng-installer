@@ -13,6 +13,8 @@ To install/upgrade ntopng:
 	
 	(reboot if required)
 	
+	rm -f install_ntopng_on_so
+	
 	wget https://github.com/branchnetconsulting/so1404-ntopng-installer/raw/master/install_ntopng_on_so
 	
 	chmod 700 install_ntopng_on_so
