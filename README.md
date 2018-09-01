@@ -9,12 +9,11 @@ Requirement: You must be running a recently "soup"-updated version of Security O
 
 To install/upgrade ntopng on Security Onion on Ubuntu 14.04:
 
-	sudo soup
-	(reboot if required)
-	rm -f install_ntopng_on_so_14
-	wget --no-check-certificate https://github.com/branchnetconsulting/so-ntopng-installer/raw/master/install_ntopng_on_so_14
-	chmod 700 install_ntopng_on_so_14
-	sudo ./install_ntopng_on_so_14
+	# DOES NOT WORK
+	# The latest ntopng from ntop.org requires a newer version of PF_RING than is used by Security Onion at this time, which
+	# will prevent ntopng from working at all if you attempt to install it on Security Onion on Ubnuntu 14.04.
+	# For Security Onion on Ubuntu 16.04 the same PF_RING mismatch is true but it appears ntopng will run without 
+	# allocating a ring rather than just terminate.
 
 To install/upgrade ntopng on Security Onion on Ubuntu 16.04:
 
