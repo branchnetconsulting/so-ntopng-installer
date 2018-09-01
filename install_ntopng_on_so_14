@@ -56,10 +56,17 @@ fi
 #       exit
 #fi
 
+# Note is there is already an ntopng.conf file in place so that we do not overwrite it with stock content later in this script
+if [ -f /etc/ntopng/ntopng.conf ]; then
+        PRESERVE_CONF=yes
+fi
+
 # Install dependencies
+add-apt-repository -y ppa:maxmind/ppa
+apt-get update &> /dev/null
 sudo apt-get install libzmq3  libnetfilter-queue1 libmnl0 libpgm-5.1-0 libnetfilter-conntrack3 \
 fonts-dejavu fonts-dejavu-extra libjemalloc1 librrd4 \
-redis-server redis-tools ttf-dejavu ttf-dejavu-core ttf-dejavu-extra librdkafka1 bridge-utils
+redis-server redis-tools ttf-dejavu ttf-dejavu-core ttf-dejavu-extra librdkafka1 bridge-utils libmaxminddb0
 
 # Fetch needed deb packages from ntop repo and confirm all were acquired
 NTOPNG_DEB="http://packages.ntop.org/apt-stable/14.04/x64/"`grep "Filename: .*\/ntopng_" /tmp/_ntop/package_list_1 | sed 's/.*\/\(ntopng_.*\)/\1/'`
@@ -114,7 +121,7 @@ echo '--dns-mode=1' >> /etc/ntopng/ntopng.conf.dist
 echo '--community' >> /etc/ntopng/ntopng.conf.dist
 echo '--daemon' >> /etc/ntopng/ntopng.conf.dist
 echo '-G=/var/tmp/ntopng.pid' >> /etc/ntopng/ntopng.conf.dist
-if [ ! -f /etc/ntopng/ntopng.conf ]; then
+if [ ! "$PRESERVE_CONF" == "yes" ]; then
         echo "Generating /etc/ntopng/ntopng.conf for the first time.  Consult ntopng man page for customization options. "
         echo "The default login credentials for ntopng are: admin/admin"
         cp /etc/ntopng/ntopng.conf.dist /etc/ntopng/ntopng.conf
@@ -134,12 +141,14 @@ if [ ! -d /usr/local/ntopng ]; then
 fi
 
 # Open ntopng port in ufw if needed
-if [[ ! `ufw status | grep "3000/tcp"` ]]; then
+if [[ ! `ufw status | grep "3000/tcp"` && ! -f /etc/ntopng/no_touch_ufw ]]; then
         echo -e "\n*\n* Adding 3000/tcp to ufw open ports.\n* If this is not desired, manually delete the new ufw rules and then create an empty file '/etc/ntopng/no_touch_ufw' to prevent future ntopng installer updates from modifying ufw.\n*\n"
         ufw allow 3000/tcp
 fi
 
+service redis-server restart
 service ntopng restart
 
-MGT_IP=`ifconfig |grep "inet addr" | awk '{print $2}' |cut -d\: -f2 |egrep -v "^(127.0.0.1|169.254)" |head -1`
+DG_IFACE=`route -n | grep '^0.0.0.0' | awk '{print $8}' | tail -n1`
+MGT_IP=`ifconfig | grep $DG_IFACE -A1 | tail -n1 | cut -d: -f2 | awk '{print $1}'`
 echo -e "\n*\n* The ntopng should now be running.  Surf to https://$MGT_IP:3000 to reach it.\n*\n"
