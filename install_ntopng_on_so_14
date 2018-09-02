@@ -1,8 +1,5 @@
 #!/bin/bash
 
-echo Do not use this script to install/upgrade ntopng on Security Onion on Ubuntu 14.04.  It will not work due to a PF_RING version mismatch issue.
-exit
-
 #
 # install_ntopng_on_so
 # Script to install the latest ntopng on SO 14.04 sensor systems.
