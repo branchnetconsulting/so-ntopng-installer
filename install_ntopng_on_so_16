@@ -65,7 +65,7 @@ fi
 
 add-apt-repository -y ppa:maxmind/ppa
 apt-get update &> /dev/null
-sudo apt-get install -y libzmq5 libnetfilter-queue1 libmnl0 libpgm-5.2-0 libnetfilter-conntrack3 \
+sudo apt-get -y install libzmq5 libnetfilter-queue1 libmnl0 libpgm-5.2-0 libnetfilter-conntrack3 \
 fonts-dejavu fonts-dejavu-extra libjemalloc1 librrd4 librdkafka1 libzstd0 libnetfilter-queue1 \
 redis-server redis-tools ttf-dejavu ttf-dejavu-core ttf-dejavu-extra librdkafka1 bridge-utils libmaxminddb0
 
