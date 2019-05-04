@@ -139,8 +139,8 @@ fi
 # create /usr/local/ntopng dir if missing, plus set ownership
 if [ ! -d /usr/local/ntopng ]; then
         mkdir /usr/local/ntopng
-        chown nobody:root /usr/local/ntopng
 fi
+chown -R ntopng:root /usr/local/ntopng
 
 # Open ntopng port in ufw if needed
 if [[ ! `ufw status | grep "3000/tcp"` && ! -f /etc/ntopng/no_touch_ufw ]]; then
@@ -148,15 +148,11 @@ if [[ ! `ufw status | grep "3000/tcp"` && ! -f /etc/ntopng/no_touch_ufw ]]; then
         ufw allow 3000/tcp
 fi
 
-# Enable and start redis-server and then ntopng
-systemctl enable ntopng &> /dev/null
+# Enable and start redis-server and then ntopng (redis most likely already running)
 systemctl enable redis-server &> /dev/null
-systemctl stop redis-server &> /dev/null
-systemctl stop ntopng &> /dev/null
-systemctl start redis-server
-systemctl start ntopng
-
-service ntopng restart
+systemctl enable ntopng &> /dev/null
+systemctl start redis-server &> /dev/null
+systemctl start ntopng &> /dev/null
 
 DG_IFACE=`route -n | grep '^0.0.0.0' | awk '{print $8}' | tail -n1`
 MGT_IP=`ifconfig | grep $DG_IFACE -A1 | tail -n1 | cut -d: -f2 | awk '{print $1}'`
