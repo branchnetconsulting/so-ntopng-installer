@@ -1,4 +1,4 @@
-# so-ntopng-installer
+# so-ntopng-installer - for Security Onion versions older than 2.0 - not for Hybrid Hunter
 Script to install or upgrade to the latest stable ntopng from the official ntop repo, onto a Security Onion sensor running Ubuntu 16.04
 
 The ntopng packages maintained at http://packages.ntop.org/ depend on the pfring package also maintained there.  However, Security Onion systems use a custom set of securityonion-pfring-* packages to satisfy pfring dependencies, and these cannot coexist with the pfring package from the ntop.org repo.  
